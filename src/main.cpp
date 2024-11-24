@@ -12,6 +12,9 @@ int main() {
     auto message = zmq::message_t{};
     if (sock.recv(message)) {
       std::cout << "received " << message << std::endl;
+      zmq::socket_t monitor(ctx, zmq::socket_type::push);
+      monitor.connect(std::getenv("MONITOR_URL"));
+      monitor.send(zmq::buffer("ping"));
     }
   }
 }
